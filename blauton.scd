@@ -1,6 +1,8 @@
 (
 {
-s.bootSync;
+s.options.sampleRate = 44100;
+s.boot;
+s.actualSampleRate.postln;
 s.waitForBoot({
 
 		"SERVER HAS BOOTED.".postln();
@@ -21,15 +23,28 @@ s.waitForBoot({
 		~freqs.postln;
 
 		y = Synth(\blauton);
+
+		s.sync;
+
 		y.set(\freqs, ~freqs);
 
-		s.prepareForRecord(thisProcess.nowExecutingPath.dirname +/+ ("recordings/" "test_1x12px_tiff" ".aiff"));
-		//s.record();
+		s.sync;
 
-		~data = thisProcess.nowExecutingPath.dirname +/+ "../test_tiffs/" "test_1x12px_tiff/" "data.sc";
+		s.recHeaderFormat = "wav";
+		s.recChannels = 1;
+		s.recSampleFormat = "int16";
+		s.prepareForRecord(thisProcess.nowExecutingPath.dirname +/+ ("recordings/" "REC_0007_1x12_5000" ".wav"));
+
+		s.sync;
+
+		~data = thisProcess.nowExecutingPath.dirname +/+ "../test_tiffs/" "REC_0007_1x12_5000/" "data.sc";
 		~data.postln;
 		f = CSVFileReader.read(~data, true, true);
 		f[0].postln;
+
+		s.sync;
+
+		s.record();
 
 		t = Task {
 			f.size.do { arg i;
@@ -50,6 +65,9 @@ s.waitForBoot({
 Server.killAll
 
 //////////// CHAOS AB HIER.. /////////////////////////////////////////
+
+
+s.stopRecording;
 
 s.reboot;
 
