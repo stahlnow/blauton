@@ -33,20 +33,20 @@ def main():
 
                 for x in range (width):
                     for y in range (height):
-                        rgb[x+(y*width)+(2*height)] = pix[x,y][r]/255
+                        rgb[x+(y*width)+(0*height)] = pix[x,y][r]/255
                         rgb[x+(y*width)+(1*height)] = pix[x,y][g]/255
-                        rgb[x+(y*width)+(0*height)] = pix[x,y][b]/255
+                        rgb[x+(y*width)+(2*height)] = pix[x,y][b]/255
 
-                bv = rgb[0:12] # slice
-                bv[:] = bv[::-1] # reverse order
+                rv = rgb[0:12] # slice
+                rv[:] = rv[::-1] # reverse order
 
                 gv = rgb[12:24] # slice
                 gv[:] = gv[::-1] # reverse order
 
-                rv = rgb[24:36] # slice
-                rv[:] = rv[::-1] # reverse order
+                bv = rgb[24:36] # slice
+                bv[:] = bv[::-1] # reverse order
 
-                rgb = np.concatenate((bv, gv, rv))
+                rgb = np.concatenate((rv, gv, bv))
 
                 for v in rgb:
                     w.write('%f,' % ( v ))
